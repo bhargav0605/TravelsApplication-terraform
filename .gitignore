@@ -31,4 +31,4 @@ terraform.rc
 crash.log
 
 Project-description
-.DS_Store/
+.DS_Store
