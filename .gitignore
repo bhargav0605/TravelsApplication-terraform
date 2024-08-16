@@ -30,4 +30,5 @@ terraform.rc
 # Ignore output files from Terraform providers
 crash.log
 
-Project-description.md
+Project-description
+.DS_Store/
