@@ -4,11 +4,8 @@ set -e
 
 terraform init
 
-# terraform plan -var-file ./_dev.tfvars -input=false -no-color -out dev.plan
 terraform plan -var-file ./_dev.tfvars -input=false -out dev.plan
 
-# read -p "Do you want to proceed with terraform apply? (y/n): " confirm
-# Ask user for confirmation before proceeding with a timeout of 30 seconds
 echo "Do you want to proceed with terraform apply? (y/n): "
 if ! read -t 30 -p "Your choice: " confirm; then
   echo "Time limit exceeded. Please run the script manually."
@@ -17,28 +14,26 @@ fi
 
 if [[ "$confirm" == "y" ]]; then
     terraform apply -input=false dev.plan
-    terraform output -raw ssh-pem > ./ssh-key.pem
-    # chmod 400 ./ssh-key.pem
+
+    if [[ ! -f "ssh-pem" ]]; then
+      terraform output -raw ssh-pem > ./ssh-key.pem
+    else
+      echo -e "PEM already generated, please use that."
+    fi
+
     echo "Terraform apply completed and SSH key saved."
 
-    # Extract the EC2 instance public IP address
     public_ip=$(terraform output -raw webserver-ec2-ip)
+    private_ip=$(terraform output -raw application-ec2-ip)
 
-    # Create the SSH login command
-    ssh_command="ssh -i ./ssh-key.pem ubuntu@$public_ip"
+    pub_webserver_ssh_command="ssh -i ./ssh-key.pem ubuntu@$public_ip"
+    pri_application_ssh_command="ssh -i ./ssh-key.pem ubuntu@$private_ip"
 
-    # Create a temporary alias for the done command
-    # alias done='terraform destroy -var-file ./_dev.tfvars -input=false -auto-approve'
-
-    # echo "Temporary alias 'done' created."
-    # echo "You can now use the 'done' command to destroy the infrastructure."
-
-    # Create the destroy script file
   cat << 'EOF' > destroy.sh
 #!/bin/bash
 
 # Delete the infrastructure
-terraform destroy -var-file ./_dev.tfvars -input=false -no-color -auto-approve
+terraform destroy -var-file ./_dev.tfvars -input=false -auto-approve
 
 # Remove the PEM file
 rm -f ./ssh-key.pem
@@ -51,15 +46,14 @@ EOF
   chmod +x destroy.sh
 
   # Print SSH login command in color
-  echo -e "\e[32mTo log in to your EC2 instance, use the following command:\e[0m"
-  echo -e "\e[34m$ssh_command\e[0m"
+  echo -e "\033[32mTo log in to your EC2 instance, use the following command:\033[0m"
+  echo -e "\033[34m$pub_webserver_ssh_command\033[0m"
+  echo -e "\033[34m$pri_application_ssh_command\033[0m"
   chmod 400 ./ssh-key.pem
-  echo -e "\e[32mDestroy script created as 'destroy.sh'.\e[0m"
+  echo -e "\033[32mDestroy script created as 'destroy.sh'.\033[0m"
   echo "Run './destroy.sh' to destroy the infrastructure, delete the PEM file, and remove this script."
 
 else
     echo "Aborted by the user."
     exit 1
 fi
-
-# terraform destroy -var-file=./_dev.tfvars -input=false -no-color  -auto-approve

@@ -1,5 +1,5 @@
 variable "env" {
-  type = string
+  type        = string
   description = "Environment you whant to deploy in."
   # default = "dev"
 }
@@ -10,19 +10,19 @@ variable "project" {
 }
 
 variable "vpc_cidr" {
-  type = string
+  type        = string
   description = "CIDR Block"
   # default = "10.0.0.0/16"
 }
 
 variable "prvt-subnet_cidr" {
-  type = string
+  type        = string
   description = "Private Subnet CIDR Block"
   # default = "10.0.1.0/24"
 }
 
 variable "pblc-subnet_cidr" {
-  type = string
+  type        = string
   description = "Public Subnet CIDR Block"
   # default = "10.0.2.0/24"
 }

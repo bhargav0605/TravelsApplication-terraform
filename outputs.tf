@@ -11,6 +11,10 @@ output "webserver-ec2-ip" {
 }
 
 output "ssh-pem" {
-  value = module.application.ssh-key-pem
+  value     = module.application.ssh-key-pem
   sensitive = true
+}
+
+output "application-ec2-ip" {
+  value = module.application.application-ec2-ip
 }
