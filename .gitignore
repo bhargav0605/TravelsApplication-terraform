@@ -3,6 +3,7 @@
 .terraform.lock.hcl
 vault-docker/
 demo.sh
+Notes.txt
 
 # Terraform plan files
 *.tfplan
