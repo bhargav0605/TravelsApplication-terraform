@@ -1,20 +1,11 @@
 # Infrastructure
 
+## Goal of v1:
+- Deploy very basic secure webserver and application infrastructure using nginx as a reverse proxy and enable TLS.
+
 ## Modules
-
-### Environment
+### v1 Infrastructure
 - Public Subnet
-    - Load Balancer
+    - Webserver-EC2 : NGINX
 - Private Subnet
-    - K8 for deployments
-
-- [ ] EKS setup.
-- [ ] Setup of a Keycloak and save all the secrets.
-- [ ] Use those secrets in SpringBoot Application.
-- [ ] Separate all the repositories for ease up deployments.
-- [ ] Dockerise Keycloak and get it ready for K8 setup.
-- [ ] Postgres setup in K8.
-- [ ] Networking in K8.
-- [ ] EKS deployment strategy   
-### Application
-
+    - Application server-EC2 : Jar
