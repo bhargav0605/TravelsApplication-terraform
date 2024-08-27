@@ -9,3 +9,6 @@
     - Webserver-EC2 : NGINX
 - Private Subnet
     - Application server-EC2 : Jar
+
+### Plan Graph:
+![alt text](https://github.com/bhargav0605/TravelsApplication-terraform/blob/dev/graph.png?raw=true)
