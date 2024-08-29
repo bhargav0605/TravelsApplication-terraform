@@ -30,7 +30,7 @@ if [[ "$confirm" == "y" ]]; then
     pri_application_ssh_command="ssh -i ./ssh-key.pem ubuntu@$private_ip"
 
   cat << 'EOF' > destroy.sh
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Delete the infrastructure
 terraform destroy -var-file ./_dev.tfvars -input=false -auto-approve
